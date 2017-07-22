@@ -1,11 +1,10 @@
 # -*-coding:utf-8-*-
 
-from flask import Flask
-from flask import render_template
-import MySQLdb
-import config
+from flask import Flask, render_template, request
+from service import creative_service
 
 app = Flask(__name__)
+
 
 @app.route("/")
 def index():
@@ -13,21 +12,24 @@ def index():
 
 
 @app.route('/select')
-def db_save():
-    connection = MySQLdb.connect(
-        host=config.HOST, user=config.USER, port=config.PORT, passwd=config.PASSWORD, db=config.DB, charset='utf8')
-    cursor = connection.cursor()
-    sql = u"select * from creative limit 5;"
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    cursor.close()
-    connection.close()
+def show_creatives():
+    creative_info_list = creative_service.get_creative_info_list()
+    return render_template('index.html', creative_list=creative_info_list)
 
-    return render_template('index.html', message=result)
 
+@app.route('/form')
+def show_form():
+    return render_template('form.html')
+
+
+@app.route('/result', methods=['POST', 'GET'])
+def result():
+    if request.method == 'POST':
+        creative_service.creative_register(request.form)
+        creative_info_list = creative_service.get_creative_info_list()
+        return render_template('index.html', creative_list=creative_info_list)
 
 
 if __name__ == "__main__":
     app.run("0.0.0.0")
     app.debug()
-

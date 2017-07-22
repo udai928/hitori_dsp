@@ -12,14 +12,12 @@
 <body>
 <!-- 画像読み込みを追加 -->
 <h1><img src="/static/images/logo.png"></h1>
-<table border=1>
-    {% for creative in creative_list %}
-    <tr>
-        <th>{{ creative.creative_name }}</th>
-        <th>{{ creative.width }} x {{ creative.height }}</th>
-        <td><img src="{{ creative.img_url }}" /></td>
-    </tr>
-    {% endfor %}
-</table>
+
+<form action="/result" method="POST">
+    <p>Creative Name <input type="text" name="creative_name"/></p>
+    <p>Image URL <input type="text" name="image_url"/></p>
+    <p>Descriptions <input type="text" name="descriptions"/></p>
+    <p><input type="submit" value="submit"/></p>
+</form>
 </body>
 </html>
