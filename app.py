@@ -1,33 +1,20 @@
 # -*-coding:utf-8-*-
 
-from flask import Flask, render_template, request
-from service import creative_service
+from flask import Flask, render_template, request, jsonify
+import json
 
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route('/')
 def index():
-    return render_template('index.html', message="Hello World! Hello Flask!")
+    return render_template('post_json.html')
 
 
-@app.route('/select')
-def show_creatives():
-    creative_info_list = creative_service.get_creative_info_list()
-    return render_template('index.html', creative_list=creative_info_list)
-
-
-@app.route('/form')
-def show_form():
-    return render_template('form.html')
-
-
-@app.route('/result', methods=['POST', 'GET'])
-def result():
-    if request.method == 'POST':
-        creative_service.creative_register(request.form)
-        creative_info_list = creative_service.get_creative_info_list()
-        return render_template('index.html', creative_list=creative_info_list)
+@app.route('/post', methods=['POST'])
+def post():
+    print(request.headers['Content-Type'])
+    return jsonify(request.json)
 
 
 if __name__ == "__main__":

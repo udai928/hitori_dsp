@@ -1,6 +1,6 @@
 # -*-coding:utf-8-*-
 
-DB = "ad_colle_db"
+DB = ""
 HOST = "0.0.0.0"
 PORT = 33333
 USER = "root"
